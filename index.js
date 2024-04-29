@@ -37,18 +37,35 @@ async function run() {
 
 
         const productCollection = client.db('Art&CraftStoreDB').collection('product')
+        // const allProductCollection = client.db('Art&CraftStoreDB').collection('allProduct')
 
+        // app.post('/ArtAndCraftCategories', async(req,res)=>{
+        //     const query = req.body
+        //     const result = await allProductCollection.insertOne
+        // })
+
+        app.post('/addCraft', async (req, res) => {
+            const query = req.body
+            const result = await productCollection.insertOne(query)
+            res.send(result)
+        })
         app.get('/myArtAndCraft/:email', async (req, res) => {
             const result = await productCollection.find({ email: req.params.email }).toArray()
             res.send(result)
         })
+        
+        app.get('/craftItemSection', async(req, res)=>{
+            const result = await productCollection.find().toArray()
+            res.send(result)
+        })
+
         app.get('/singleProduct/:id', async (req, res) => {
-            console.log(req.params.id);
+            // console.log(req.params.id);
             const result = await productCollection.findOne({ _id: new ObjectId(req.params.id) });
             res.send(result)
         })
         app.put('/update/:id', async (req, res) => {
-            console.log(req.params.id);
+            // console.log(req.params.id);
             const query = { _id: new ObjectId(req.params.id) };
             const options = { upsert: true };
             const getUpdateInfo = req.body
@@ -69,19 +86,14 @@ async function run() {
             res.send(result)
         })
 
-        app.post('/addCraft', async (req, res) => {
-            const product = req.body
-            console.log('new product', product);
-            const result = await productCollection.insertOne(product)
+
+
+        app.delete('/delete/:id', async (req, res) => {
+            console.log(req.body);
+            const result = await productCollection.deleteOne({ _id: new ObjectId(req.params.id) })
             res.send(result)
         })
 
-        app.delete('/delete/:id',async(req, res)=>{
-            console.log(req.body);
-            const result = await productCollection.deleteOne({_id: new ObjectId(req.params.id)})
-            res.send(result)
-        })
-        
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
