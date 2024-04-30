@@ -37,12 +37,7 @@ async function run() {
 
 
         const productCollection = client.db('Art&CraftStoreDB').collection('product')
-        // const allProductCollection = client.db('Art&CraftStoreDB').collection('allProduct')
-
-        // app.post('/ArtAndCraftCategories', async(req,res)=>{
-        //     const query = req.body
-        //     const result = await allProductCollection.insertOne
-        // })
+        const productCollectionAll = client.db('Art&CraftStoreDB').collection('productAll')
 
         app.post('/addCraft', async (req, res) => {
             const query = req.body
@@ -53,19 +48,25 @@ async function run() {
             const result = await productCollection.find({ email: req.params.email }).toArray()
             res.send(result)
         })
-        
-        app.get('/craftItemSection', async(req, res)=>{
+
+        app.get('/craftItemSection', async (req, res) => {
+            const result = await productCollection.find().toArray()
+            res.send(result)
+        })
+        app.get('/artAndCraftCategoriesSection', async (req, res) => {
+            const result = await productCollectionAll.find().toArray()
+            res.send(result)
+        })
+        app.get('/allArtAndCraft', async (req, res) => {
             const result = await productCollection.find().toArray()
             res.send(result)
         })
 
         app.get('/singleProduct/:id', async (req, res) => {
-            // console.log(req.params.id);
             const result = await productCollection.findOne({ _id: new ObjectId(req.params.id) });
             res.send(result)
         })
         app.put('/update/:id', async (req, res) => {
-            // console.log(req.params.id);
             const query = { _id: new ObjectId(req.params.id) };
             const options = { upsert: true };
             const getUpdateInfo = req.body
