@@ -7,7 +7,7 @@ const port = process.env.PROT || 5000;
 
 // middleware
 app.use(cors({
-    origin: ["http://localhost:5173", "https://sparkling-paletas-aeb127.netlify.app/"],
+    origin: ["http://localhost:5173", "https://sparkling-paletas-aeb127.netlify.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     withCredentials: true,
 }
