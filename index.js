@@ -107,6 +107,6 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-    console.log('prot is running ', port);
+    console.log(`Server is running on port ${port}`);
 })
 
